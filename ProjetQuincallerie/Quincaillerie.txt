@@ -1,0 +1,129 @@
+CREATE DATABASE Quincaillerie;
+USE Quincaillerie;
+
+CREATE TABLE client (
+    client_id INT PRIMARY KEY AUTO_INCREMENT,
+    client_nom CHAR(50),
+    client_prenom CHAR(50),
+    client_adresse CHAR(100),
+    client_tel CHAR(15)
+);
+
+CREATE TABLE employe (
+    employe_id INT PRIMARY KEY AUTO_INCREMENT,
+    employe_nom CHAR(50),
+    employe_prenom CHAR(50),
+    employe_adresse CHAR(100),
+    employe_tel CHAR(15)
+);
+
+CREATE TABLE fournisseur (
+    fournisseur_id INT PRIMARY KEY AUTO_INCREMENT,
+    fournisseur_nom CHAR(50),
+    fournisseur_prenom CHAR(50),
+    fournisseur_tel CHAR(15)
+);
+
+CREATE TABLE marque (
+    marque_id INT PRIMARY KEY AUTO_INCREMENT,
+    marque_nom CHAR(50)
+);
+
+CREATE TABLE produit (
+    produit_id INT PRIMARY KEY AUTO_INCREMENT,
+    produit_nom CHAR(100),
+    produit_quantite INT,
+    produit_prix DECIMAL(10, 2),
+    marque_id INT,
+    FOREIGN KEY (marque_id) REFERENCES marque(marque_id) ON DELETE CASCADE
+);
+
+CREATE TABLE commande (
+    commande_id INT PRIMARY KEY AUTO_INCREMENT,
+    commande_client_id INT,
+    commande_produit_id INT,
+    commande_date DATE,
+    FOREIGN KEY (commande_client_id) REFERENCES client(client_id) ON DELETE CASCADE,
+    FOREIGN KEY (commande_produit_id) REFERENCES produit(produit_id) ON DELETE CASCADE
+);
+
+CREATE TABLE stock (
+    stock_id INT PRIMARY KEY AUTO_INCREMENT,
+    stock_produit_id INT,
+    FOREIGN KEY (stock_produit_id) REFERENCES produit(produit_id) ON DELETE CASCADE
+);
+
+CREATE TABLE facture (
+    facture_id INT PRIMARY KEY AUTO_INCREMENT,
+    facture_client_id INT,
+    facture_produit_id INT,
+    facture_prix INT,
+    FOREIGN KEY (facture_client_id) REFERENCES client(client_id) ON DELETE CASCADE,
+    FOREIGN KEY (facture_produit_id) REFERENCES produit(produit_id) ON DELETE CASCADE
+);
+
+
+
+-- Insertion dans la table client
+INSERT INTO client (client_id, client_nom, client_prenom, client_adresse, client_tel) VALUES
+(1, 'Dupont', 'Jean', '123 Rue de Paris', '0123456789'),
+(2, 'Martin', 'Sophie', '456 Avenue des Champs', '0987654321'),
+(3, 'Durand', 'Lucas', '789 Boulevard Saint-Germain', '0147258396'),
+(4, 'Petit', 'Emma', '321 Rue de Lyon', '0156784321'),
+(5, 'Leroy', 'Noah', '654 Rue de Marseille', '0167895432');
+
+-- Insertion dans la table employe
+INSERT INTO employe (employe_id, employe_nom, employe_prenom, employe_adresse, employe_tel) VALUES
+(1, 'Leroy', 'Alice', '321 Rue de Lyon', '0123456789'),
+(2, 'Moreau', 'Paul', '654 Rue de Marseille', '0987654321'),
+(3, 'Garnier', 'Claire', '987 Rue de Nice', '0147258396'),
+(4, 'Simon', 'Julien', '159 Boulevard de la République', '0178901234'),
+(5, 'Bernard', 'Chloé', '753 Avenue des Fleurs', '0189012345');
+
+-- Insertion dans la table fournisseur
+INSERT INTO fournisseur (fournisseur_id, fournisseur_nom, fournisseur_prenom, fournisseur_tel) VALUES
+(1, 'Bernard', 'Pierre', '0123456789'),
+(2, 'Lemoine', 'Marie', '0987654321'),
+(3, 'Gautier', 'Julien', '0147258396'),
+(4, 'Roux', 'Luc', '0198765432'),
+(5, 'Morel', 'Sophie', '0112233445');
+
+-- Insertion dans la table marque
+INSERT INTO marque (marque_id, marque_nom) VALUES
+(1, 'MarqueA'),
+(2, 'MarqueB'),
+(3, 'MarqueC'),
+(4, 'MarqueD'),
+(5, 'MarqueE');
+
+-- Insertion dans la table produit
+INSERT INTO produit (produit_id, produit_nom, produit_quantite, produit_prix, marque_id) VALUES
+(1, 'Vis', 100, 5.50, 1),
+(2, 'Clé à molette', 50, 15.00, 2),
+(3, 'Tournevis', 75, 8.99, 3),
+(4, 'Perceuse', 30, 99.99, 4),
+(5, 'Scie', 20, 45.00, 5);
+
+-- Insertion dans la table commande
+INSERT INTO commande (commande_id, commande_client_id, commande_produit_id, commande_date) VALUES
+(1, 1, 1, '2024-10-01'),
+(2, 2, 2, '2024-10-02'),
+(3, 3, 3, '2024-10-03'),
+(4, 4, 4, '2024-10-04'),
+(5, 5, 5, '2024-10-05');
+
+-- Insertion dans la table stock
+INSERT INTO stock (stock_id, stock_produit_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5);
+
+-- Insertion dans la table facture
+INSERT INTO facture (facture_id, facture_client_id, facture_produit_id, facture_prix) VALUES
+(1, 1, 1, 10),
+(2, 2, 2, 5),
+(3, 3, 3, 3),
+(4, 4, 4, 2),
+(5, 5, 5, 1);
